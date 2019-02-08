@@ -113,6 +113,10 @@ function nwn_lobby.dissector(tvbuf, pktinfo, root)
 	local message_type = tvbuf:range(offset, 4):string()
 	offset = offset + 4
 
+    if message_type == "BNDM" then
+        return
+    end
+
 	-- A small hack to get around the BNERU FiveCC, maybe this U has something to say?
 	if tvbuf:range(offset, 1):string() == "U" then
 		offset = offset + 1
