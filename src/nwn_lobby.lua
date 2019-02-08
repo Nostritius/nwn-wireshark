@@ -95,6 +95,11 @@ nwn_lobby.fields = {
 -- datagram into usable pieces of
 -- information
 function nwn_lobby.dissector(tvbuf, pktinfo, root)
+	-- Every packet with a B is a lobby packet
+	if tvbuf:range(0, 1):string() ~= "B" then
+		return
+	end
+
 	-- Set that this paket is part of the nwn lobby protocol and not just
 	-- an udp paket.
 	pktinfo.cols.protocol:set("NWNLobby")
