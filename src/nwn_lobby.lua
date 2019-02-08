@@ -37,7 +37,18 @@ local message_type_descriptions = {
 
 	-- Description retrieving
 	["BNDS"] = "Description Request",
-	["BNDR"] = "Description Response"
+	["BNDR"] = "Description Response",
+
+	-- Joining the game
+	["BNCS"] = "Join Request",
+	["BNCR"] = "Join Response",
+
+	-- Leaving the game
+	["BNDM"] = "Leave Request",
+
+	-- Session key exchange (?)
+	["BNVS"] = "Session key request",
+	["BNVR"] = "Session key response"
 }
 
 ----------------------------------------
