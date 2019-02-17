@@ -11,11 +11,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-----------------------------------------
--- Print some values for debugging
-print("Wireshark version = ", get_version())
-print("Lua version = ", _VERSION)
-
 -- The types of messages
 local message_type_descriptions = {
 	-- Messages related to the account login
