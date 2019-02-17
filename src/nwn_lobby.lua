@@ -32,7 +32,10 @@ local message_type_descriptions = {
 
 	-- Description retrieving
 	["BNDS"] = "Description Request",
-	["BNDR"] = "Description Response"
+	["BNDR"] = "Description Response",
+
+	-- Server to master server messages
+	["BMST"] = "Unknown Message Type"
 }
 
 ----------------------------------------
