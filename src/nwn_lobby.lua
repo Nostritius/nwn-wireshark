@@ -178,4 +178,15 @@ function nwn_lobby.dissector(tvbuf, pktinfo, root)
 	end
 end
 
-DissectorTable.get("udp.port"):add(5120, nwn_lobby)
+----------------------------------------
+-- Register heuristic function to separate
+-- lobby packets from game packets
+local function nwn_lobby_magicid(tvbuf, pktinfo, root)
+	if tvbuf:range(0, 1):string() == "B" then
+		nwn_lobby.dissector(tvbuf, pktinfo, root)
+		return true
+	end
+	return false
+end
+
+nwn_lobby:register_heuristic("udp", nwn_lobby_magicid)
