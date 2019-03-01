@@ -11,11 +11,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-----------------------------------------
--- Print some values for debugging
-print("Wireshark version = ", get_version())
-print("Lua version = ", _VERSION)
-
 -- The types of messages
 local message_type_descriptions = {
 	-- Messages related to the account login
@@ -39,16 +34,8 @@ local message_type_descriptions = {
 	["BNDS"] = "Description Request",
 	["BNDR"] = "Description Response",
 
-	-- Joining the game
-	["BNCS"] = "Join Request",
-	["BNCR"] = "Join Response",
-
-	-- Leaving the game
-	["BNDM"] = "Leave Request",
-
-	-- Session key exchange (?)
-	["BNVS"] = "Session key request",
-	["BNVR"] = "Session key response"
+	-- Server to master server messages
+	["BMST"] = "Unknown Message Type"
 }
 
 ----------------------------------------
@@ -106,11 +93,6 @@ nwn_lobby.fields = {
 -- datagram into usable pieces of
 -- information
 function nwn_lobby.dissector(tvbuf, pktinfo, root)
-	-- Every packet with a B is a lobby packet
-	if tvbuf:range(0, 1):string() ~= "B" then
-		return
-	end
-
 	-- Set that this paket is part of the nwn lobby protocol and not just
 	-- an udp paket.
 	pktinfo.cols.protocol:set("NWNLobby")
@@ -123,10 +105,6 @@ function nwn_lobby.dissector(tvbuf, pktinfo, root)
 	-- Read the messages FourCC
 	local message_type = tvbuf:range(offset, 4):string()
 	offset = offset + 4
-
-    if message_type == "BNDM" then
-        return
-    end
 
 	-- A small hack to get around the BNERU FiveCC, maybe this U has something to say?
 	if tvbuf:range(offset, 1):string() == "U" then
@@ -198,4 +176,15 @@ function nwn_lobby.dissector(tvbuf, pktinfo, root)
 	end
 end
 
-DissectorTable.get("udp.port"):add(5120, nwn_lobby)
+----------------------------------------
+-- Register heuristic function to separate
+-- lobby packets from game packets
+local function nwn_lobby_magicid(tvbuf, pktinfo, root)
+	if tvbuf:range(0, 1):string() == "B" then
+		nwn_lobby.dissector(tvbuf, pktinfo, root)
+		return true
+	end
+	return false
+end
+
+nwn_lobby:register_heuristic("udp", nwn_lobby_magicid)
