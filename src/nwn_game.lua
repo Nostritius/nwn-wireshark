@@ -16,6 +16,16 @@
 local nwn_game = Proto("nwn_game", "Neverwinter Nights Multiplayer Game Protocol")
 
 ----------------------------------------
+-- Create the field objects for the protocol
+
+-- the size of the payload
+local pf_payloadsize = ProtoField.uint16("nwn_game.payloadsize", "Payload Size")
+
+nwn_game.fields = {
+	pf_payloadsize
+}
+
+----------------------------------------
 -- Create the dissector for the nwn game
 -- protocol. This function dissects the
 -- datagram into usable pieces of
@@ -27,6 +37,9 @@ function nwn_game.dissector(tvbuf, pktinfo, root)
 
     -- Get a new tree for the nwn protocol data
     local tree = root:add(nwn_game, tvbuf:range(0, pktlen))
+
+    -- Read the payload length
+    tree:add(pf_payloadsize, tvbuf:range(10, 2):uint())
 end
 
 ----------------------------------------
