@@ -26,7 +26,7 @@ local pf_payloadsize = ProtoField.uint16("nwn_game.payloadsize", "Payload Size")
 
 nwn_game.fields = {
     pf_payloadcount,
-	pf_payloadsize
+    pf_payloadsize
 }
 
 ----------------------------------------
