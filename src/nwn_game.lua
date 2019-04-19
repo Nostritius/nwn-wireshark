@@ -18,10 +18,14 @@ local nwn_game = Proto("nwn_game", "Neverwinter Nights Multiplayer Game Protocol
 ----------------------------------------
 -- Create the field objects for the protocol
 
+-- the number of payloads this packet is split up
+local pf_payloadcount = ProtoField.uint16("nwn_game.payloadcount", "Payload Count")
+
 -- the size of the payload
 local pf_payloadsize = ProtoField.uint16("nwn_game.payloadsize", "Payload Size")
 
 nwn_game.fields = {
+    pf_payloadcount,
 	pf_payloadsize
 }
 
@@ -37,6 +41,9 @@ function nwn_game.dissector(tvbuf, pktinfo, root)
 
     -- Get a new tree for the nwn protocol data
     local tree = root:add(nwn_game, tvbuf:range(0, pktlen))
+
+    -- Read the payload length
+    tree:add(pf_payloadcount, tvbuf:range(8, 2):uint())
 
     -- Read the payload length
     tree:add(pf_payloadsize, tvbuf:range(10, 2):uint())
