@@ -49,7 +49,7 @@ local nwn_lobby = Proto("nwn_lobby", "Neverwinter Nights Multiplayer Lobby Proto
 local pf_message_type = ProtoField.string("nwn_lobby.type", "Message Type", base.ASCII, "what type of message is this?")
 
 -- if a message is a server message
-local pf_source = ProtoField.int8("nwn_lobby.source", "Message Source", base.RANGE_STRING, {[0] = "Client", [1] = "Server"})
+local pf_source = ProtoField.uint8("nwn_lobby.source", "Message Source", base.HEX, {[0] = "Client", [1] = "Server"}, 0xFF)
 
 -- BNER Fields
 local pf_bner_server_name = ProtoField.string("nwn_lobby.bner.server_name", "Server Name", base.ASCII, "what is the name of the server?")
@@ -59,12 +59,12 @@ local pf_bnxr_min_level        = ProtoField.string("nwn_lobby.bnxr.min_level", "
 local pf_bnxr_max_level        = ProtoField.string("nwn_lobby.bnxr.max_level", "Maximum Level", base.ASCII, "what is the maximum level to join the server?")
 local pf_bnxr_current_players  = ProtoField.string("nwn_lobby.bnxr.current_players", "Current Players", base.ASCII, "How many players are already on the server?")
 local pf_bnxr_max_players      = ProtoField.string("nwn_lobby.bnxr.max_players", "Maximum Players", base.ASCII, "How many players can join the server?")
-local pf_bnxr_local_characters = ProtoField.int8("nwn_lobby.bnxr.local_characters", "Allow local characters", base.RANGE_STRING, {[0] = "No", [1] = "Yes"})
-local pf_bnxr_pvp              = ProtoField.int8("nwn_lobby.bnxr.pvp", "Player versus Player", base.RANGE_STRING, {[0] = "None", [1] = "Group", [2] = "Complete"})
-local pf_bnxr_player_pause     = ProtoField.int8("nwn_lobby.bnxr.player_pause", "Allow players to pause", base.RANGE_STRING, {[0] = "No", [1] = "Yes"})
-local pf_bnxr_only_one_group   = ProtoField.int8("nwn_lobby.bnxr.only_one_group", "Allow only one group", base.RANGE_STRING, {[0] = "No", [1] = "Yes"})
-local pf_bnxr_rule_conform     = ProtoField.int8("nwn_lobby.bnxr.rule_conform", "Allow only rule conform characters", base.RANGE_STRING, {[0] = "No", [1] = "Yes"})
-local pf_bnxr_item_level       = ProtoField.int8("nwn_lobby.bnxr.item_level", "Allow level condition for items", base.RANGE_STRING, {[0] = "No", [1] = "Yes"})
+local pf_bnxr_local_characters = ProtoField.uint8("nwn_lobby.bnxr.local_characters", "Allow local characters", base.HEX, {[0] = "No", [1] = "Yes"}, 0xFF)
+local pf_bnxr_pvp              = ProtoField.uint8("nwn_lobby.bnxr.pvp", "Player versus Player", base.HEX, {[0] = "None", [1] = "Group", [2] = "Complete"}, 0xFF)
+local pf_bnxr_player_pause     = ProtoField.uint8("nwn_lobby.bnxr.player_pause", "Allow players to pause", base.HEX, {[0] = "No", [1] = "Yes"}, 0xFF)
+local pf_bnxr_only_one_group   = ProtoField.uint8("nwn_lobby.bnxr.only_one_group", "Allow only one group", base.HEX, {[0] = "No", [1] = "Yes"}, 0xFF)
+local pf_bnxr_rule_conform     = ProtoField.uint8("nwn_lobby.bnxr.rule_conform", "Allow only rule conform characters", base.HEX, {[0] = "No", [1] = "Yes"}, 0xFF)
+local pf_bnxr_item_level       = ProtoField.uint8("nwn_lobby.bnxr.item_level", "Allow level condition for items", base.HEX, {[0] = "No", [1] = "Yes"}, 0xFF)
 
 nwn_lobby.fields = { 
 	-- Common fields for every paket
